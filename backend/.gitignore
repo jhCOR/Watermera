@@ -1,0 +1,6 @@
+**/node_modules
+/packge-lock.json
+.env
+.vscode
+
+**/build
