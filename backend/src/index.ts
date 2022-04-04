@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import Handler from "./Handler";
+import Middleware from "./Middleware";
 
 function main(){
 	const configPath = path.resolve('./config/config.json');
@@ -32,7 +33,7 @@ function main(){
 
 	app.set('jwtKey', config.jwtKey);
 
-	app.post('/register', mem.single('reqbody'), Handler.register);
+	app.post('/register', Middleware.checkBody(['email', 'password', 'dob', 'address']), Handler.register);
 
 	app.listen(config.port, () => {
 		console.log(`Web service started on port ${config.port}.`);
