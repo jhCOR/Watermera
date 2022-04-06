@@ -13,8 +13,10 @@ export default function Router() {
 					<MainContainer />
 				,
 			children: [
-				{ path: 'map' } ,
+				{ path: 'map' },
 				{ path: 'list'},
+				{ path: 'apply'},
+				{ path: 'write/search'},
 
 			],
 		},

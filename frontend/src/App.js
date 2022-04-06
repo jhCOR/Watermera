@@ -9,7 +9,6 @@ import Header from './components/modal/header';
 export default function App() {
 	return (
 		 <div className="App">
-			<Header />
 			<Router path="/">
                 <MainContainer />
             </Router>
