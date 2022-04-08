@@ -1,4 +1,4 @@
-import Response, { GenErr } from "../Response";
+import ResponseBase, { GenErr } from "../ResponseBase";
 
 export enum RegResult{
 	Success,
@@ -6,7 +6,7 @@ export enum RegResult{
 	Registered
 }
 
-export default interface RegistrationResponse extends Response{
+export default interface RegistrationResponse extends ResponseBase{
 	res: RegResult | GenErr;
 	data: {
 		uid: string;

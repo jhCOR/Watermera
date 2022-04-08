@@ -1,7 +1,7 @@
 import express from "express";
 import Database from "../database/DataProvider";
 import RegisterRequest from "../requests/RegisterRequest";
-import { GenErr } from "../responses/Response";
+import { GenErr } from "../responses/ResponseBase";
 import RegistrationResponse, { RegResult } from "../responses/responses/RegistrationResponse";
 
 const reasons = ['', 'Invalid email.', 'You are already registered.'];
