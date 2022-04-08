@@ -1,5 +1,5 @@
 import express from "express";
-import Database from "../database/Database";
+import Database from "../database/DataProvider";
 import RegisterRequest from "../requests/RegisterRequest";
 import RegistrationResponse from "../responses/responses/RegistrationResponse";
 
