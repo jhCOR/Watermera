@@ -1,4 +1,7 @@
+export enum GenErr{
+	SQL = -1,
+}
+
 export default interface Response{
-	res: number;
 	reason?: string;
 }
