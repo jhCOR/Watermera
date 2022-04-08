@@ -1,9 +1,9 @@
 import ResponseBase, { GenErr } from "../ResponseBase";
 
 export enum LoginResult{
-	Success,
-	NoEmail,
-	WrongPassword,
+	Success, //Login succeeds
+	NotRegistered, //User does not exist
+	WrongPassword, //User provided wrone password
 }
 
 export default interface LoginResponse extends ResponseBase{

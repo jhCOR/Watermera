@@ -1,9 +1,9 @@
 import ResponseBase, { GenErr } from "../ResponseBase";
 
 export enum RegResult{
-	Success,
-	Invalid,
-	Registered
+	Success, //Registration succeeds
+	Invalid, //Email is invalid
+	Registered //User is already registered
 }
 
 export default interface RegistrationResponse extends ResponseBase{

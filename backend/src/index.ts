@@ -11,9 +11,9 @@ import MySQL from "./database/MySQL";
 function main(){
 	const configPath = path.resolve('./config/config.json');
 
-	if(!fs.existsSync(configPath)){
+	if(!fs.existsSync(configPath)){ //Generate config if it is missing
 		fs.writeFileSync(configPath, JSON.stringify({
-			jwtKey: Buffer.from(crypto.randomBytes(64)).toString('base64'),
+			jwtKey: Buffer.from(crypto.randomBytes(64)).toString('base64'), //Generate random secet JWT signing key
 			allowedOrigins: [],
 			port: 8080,
 			database: {
@@ -30,7 +30,7 @@ function main(){
 	const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 	const app = express();
-	const mem = multer({storage: multer.memoryStorage()});
+	const mem = multer({storage: multer.memoryStorage()}); //For file uplod
 
 	const options: cors.CorsOptions = {
 		origin: config.allowed,
@@ -41,7 +41,7 @@ function main(){
 	app.set('jwtKey', config.jwtKey);
 	app.set('db', new MySQL(config.database.host, config.database.user, config.database.password, config.database.dbname));
 
-	app.post('/register', Middleware.checkBody(['email', 'password', 'dob', 'address']), Handler.register);
+	app.post('/register', Middleware.checkBody(['email', 'password', 'dob', 'address']), Handler.register); //Registration endpoint
 
 	app.listen(config.port, () => {
 		console.log(`Web service started on port ${config.port}.`);
