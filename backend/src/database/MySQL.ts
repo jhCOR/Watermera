@@ -3,6 +3,7 @@ import DataProvider from "./DataProvider";
 import mysql from 'mysql2/promise';
 import { RegResult } from "../responses/responses/RegistrationResponse";
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 
 export default class MySQL extends DataProvider{
 	conn!: mysql.Connection;
@@ -17,16 +18,19 @@ export default class MySQL extends DataProvider{
 		this.password = password;
 		this.database = database;
 	}
+
 	async register(req: RegisterRequest): Promise<{res: RegResult.Registered} | {res: RegResult.Success, uid: string}> {
 		await this.conn.beginTransaction();
-		const res = this.conn.execute('SELECT EXISTS (SELECT * FROM users WHERE email = ?) AS res;', [req.email]);
-		if(res) return {res: RegResult.Registered};
+		const [rows, fields] = await this.conn.execute('SELECT EXISTS (SELECT * FROM users WHERE email = ?) AS res;', [req.email]);
+		if(rows) return {res: RegResult.Registered};
 		else {
 			const uid = crypto.randomUUID();
-			this.conn.execute(`INSERT INTO users (uid, email, hash, name, dob, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)`, [uid, req.email, req.hash, req.name, req.dob, req.phone, req.address]);
+			const hash = await bcrypt.hash(req.hash, 12);
+			this.conn.execute(`INSERT INTO users (uid, email, hash, name, dob, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)`, [uid, req.email, hash, req.name, req.dob, req.phone, req.address]);
 			return {res: RegResult.Success, uid: uid};
 		}
 	}
+
 	async init(): Promise<boolean>{
 		this.conn = await mysql.createConnection({
 			host: this.host,

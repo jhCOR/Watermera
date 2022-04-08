@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { MissingPropError } from "../responses/errors/MissingPropError";
+import ErrorResponse, { ReqError } from "../responses/responses/ErrorResponse";
 
 export default function checkBody(properties: string[]): RequestHandler{
 	return (req, res, next) => {
@@ -8,10 +8,10 @@ export default function checkBody(properties: string[]): RequestHandler{
 		properties.sort();
 		for(let i = 0; i < properties.length; i++) {
 			if(bodyProps[i] !== properties[i]){
-				const response: MissingPropError = {
-					errcode: 'E_MISSING_PROP',
-					message: 'Body is missing critical property.',
-					missing: properties[i]
+				const response: ErrorResponse<ReqError.MissingProp> = {
+					res: ReqError.MissingProp,
+					reason: 'Body is missing critical property.',
+					additional: properties[i]
 				};
 				res.json(response);
 				return;
