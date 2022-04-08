@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
+import { Link } from 'react-router-dom';
 import { Box, Grid, Container, Typography, Divider, Card, CardContent, CardHeader, CardActions, Button,
 	   AppBar, Toolbar} from '@mui/material';
 
@@ -52,7 +53,9 @@ var width = tiers.length == 1 ? 12 : 6;
                   </ul>
 				
                 </CardContent>
+				<Link to={tier.url}> 
 				  <Button size="small">더보기</Button>
+				</Link>
               </Card>
             </Grid>
           ))}

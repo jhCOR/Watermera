@@ -13,19 +13,25 @@ function Header() {
       >
         <Toolbar sx={{ flexWrap: 'wrap' }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-          	K-water
+			  <Link  to="/"> 
+				  K-water
+			  </Link>
           </Typography>
           <nav>
-			<Link  to="/map"> 
-				  <Button variant="text">소개</Button>
-			</Link>
+			<a
+			href="https://www.miricanvas.com/v/1zrnpt"
+			  target="_blank"
+			  rel="noopener noreferrer"
+			>
+			   <Button variant="text">소개</Button>
+			</a>
             <Link  to="/apply"> 
 				  <Button variant="text">수질 검사 신청</Button>
 			</Link>
-            <Link  to="/map"> 
+            <Link  to="/board/announce"> 
 				  <Button variant="text">공지사항</Button>
 			</Link>
-			<Link  to="/map"> 
+			<Link  to="/board/question"> 
 				  <Button variant="text">Q&A</Button>
 			</Link>
           </nav>

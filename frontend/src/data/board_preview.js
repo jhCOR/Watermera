@@ -1,6 +1,7 @@
 const tiers = [
   {
     title: '공지사항',
+	url:'/board/announce',
     description: [
       '공지사항 1',
       '공지사항 2',
@@ -11,6 +12,7 @@ const tiers = [
   },
   {
     title: 'Q & A',
+	url:'/board/question',
     description: [
       'Q & A 1',
       'Q & A 2',
