@@ -1,13 +1,16 @@
 import React, { useCallback, useState } from 'react';
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 
-import { Link } from 'react-router-dom';
 import { Box, Grid, Container, Typography, Divider, Card, CardContent, CardHeader, CardActions, Button,
 	   AppBar, Toolbar} from '@mui/material';
 
 function Board({tiers}) {
-	
+const navigate = useNavigate();	
 var width = tiers.length == 1 ? 12 : 6;
-	
+	const showPost = (url) =>{
+	  console.log(url);
+	  navigate(url);
+  }
   return (
 	  
 	<Container component="main">
@@ -46,6 +49,7 @@ var width = tiers.length == 1 ? 12 : 6;
                         variant="subtitle1"
                         align="center"
                         key={line}
+						onClick={() => showPost('/board/showPost?id='+tier.id)}
                       >
                         {line}
                       </Typography>

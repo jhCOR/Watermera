@@ -3,8 +3,7 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link } from 'react-router-dom';
-
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   Card,
   Table,
@@ -29,7 +28,13 @@ function ShowList({postObject}) {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+	const navigate = useNavigate();
+	
+  const showPost = (url) =>{
+	  console.log(url);
+	  navigate(url);
+  }
+  
   const handleChangePage = (event, newPage) => {
 	console.log('newPage:')
 	console.log(newPage)
@@ -71,9 +76,10 @@ function ShowList({postObject}) {
                           tabIndex={-1}
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+						  onClick={() => showPost('/board/showPost?id='+id)}
                         >
 
-                          <TableCell component="th" scope="row" padding="none">
+                          <TableCell component="th" scope="row" padding="none" >
                             <Stack direction="row" alignItems="center" spacing={2}>
                             
                               <Typography variant="subtitle2" noWrap>

@@ -1,6 +1,7 @@
 const applyBoardList = [
   {
     title: '나의 신청 목록',
+	url:'/board/myApply',
     description: [
       '2021-01-11 신청자: 홍길동',
       '2021-05-11 신청자: 홍길동',

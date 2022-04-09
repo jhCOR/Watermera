@@ -1,24 +1,17 @@
+import announcePost from './announceBoardPost';
+import questionPost from './QandABoardPost';
+var announce_post = announcePost.map((post)=>post.title);
+var question_post = questionPost.map((post)=>post.title);
 const tiers = [
   {
     title: '공지사항',
 	url:'/board/announce',
-    description: [
-      '공지사항 1',
-      '공지사항 2',
-      '공지사항 3',
-      '공지사항 4',
-    ],
-
+    description: announce_post.slice(0,4)
   },
   {
     title: 'Q & A',
 	url:'/board/question',
-    description: [
-      'Q & A 1',
-      'Q & A 2',
-      'Q & A 3',
-      'Q & A 4',
-    ],
+    description: question_post.slice(0,4),
 
   }
 ];

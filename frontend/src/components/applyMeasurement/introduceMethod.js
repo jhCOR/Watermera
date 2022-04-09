@@ -60,14 +60,15 @@ function ShowList() {
 						http://www.kwater.or.kr - 국민소통 - 고객광장 - 민원(질의)신청
 					</Typography>
 					
-					<Link to="/write"> 
-					  <Button >신청서 작성</Button>
-					</Link>
+					
                 </TableBody>
                 
               </Table>
+				<Link to="/write"> 
+					  <Button >신청서 작성</Button>
+				</Link>
             </TableContainer>
-		
+			
         </Card>
       </Container>
   );
