@@ -10,5 +10,6 @@ export default interface RegistrationResponse extends ResponseBase{
 	res: RegResult | GenErr;
 	data: {
 		uid: string;
+		token: string;
 	} | null;
 }

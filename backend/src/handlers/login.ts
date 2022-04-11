@@ -3,6 +3,7 @@ import DataProvider from "../database/DataProvider";
 import LoginRequest from "../requests/LoginRequest";
 import { GenErr } from "../responses/ResponseBase";
 import LoginResponse, { LoginResult } from "../responses/responses/LoginResponse";
+import jsonwebtoken from 'jsonwebtoken';
 
 const reasons = ['', 'You are not registered.', 'Wrong password.'];
 
@@ -16,7 +17,19 @@ export default async function login(req: express.Request, res: express.Response)
 	try{
 		const query = await db.login(request); //Register user
 		response.res = query.res; //Set result code
-		if(query.res === LoginResult.Success) response.data = {uid: query.uid}; //If succeeded, set UID in response
+		if(query.res === LoginResult.Success) {
+			const token = jsonwebtoken.sign(
+				{
+					uid: query.uid
+				}, 
+				req.app.get('jwtKey'),
+				{}
+			);
+			response.data = {
+				uid: query.uid,
+				token: token
+			}; //If succeeded, set UID in response
+		}
 		if (response.res) response.reason = reasons[response.res]; //Set reason message
 	} catch(e){
 		response.res = GenErr.SQL; //Set error code to SQL error

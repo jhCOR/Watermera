@@ -10,5 +10,6 @@ export default interface LoginResponse extends ResponseBase{
 	res: LoginResult | GenErr;
 	data: {
 		uid: string;
+		token: string;
 	} | null;
 }
