@@ -3,7 +3,7 @@ import ResponseBase, { GenErr } from "../ResponseBase";
 export enum LoginResult{
 	Success, //Login succeeds
 	NotRegistered, //User does not exist
-	WrongPassword, //User provided wrone password
+	WrongPassword, //User provided wrong password
 }
 
 export default interface LoginResponse extends ResponseBase{

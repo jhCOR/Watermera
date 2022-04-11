@@ -14,7 +14,7 @@ export default async function register(req: express.Request, res: express.Respon
 		data: null
 	}
 	try{
-		if((/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/.test(request.address))){ //Check regex
+		if((/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(request.email))){ //Check regex
 			const query = await db.register(request); //Register user
 			response.res = query.res; //Set result code
 			if(query.res === RegResult.Success) response.data = {uid: query.uid}; //If succeeded, set UID in response
@@ -22,6 +22,7 @@ export default async function register(req: express.Request, res: express.Respon
 		response.reason = reasons[response.res]; //Set reason message
 	} catch(e){
 		response.res = GenErr.SQL; //Set error code to SQL error
+		console.log(e);
 		response.reason = 'SQL error raised.';
 	}
 	res.json(response);

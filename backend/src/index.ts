@@ -8,7 +8,7 @@ import Handler from "./Handler";
 import Middleware from "./Middleware";
 import MySQL from "./database/MySQL";
 
-function main(){
+async function main(){
 	const configPath = path.resolve('./config/config.json');
 
 	if(!fs.existsSync(configPath)){ //Generate config if it is missing
@@ -30,18 +30,23 @@ function main(){
 	const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 	const app = express();
+	
 	const mem = multer({storage: multer.memoryStorage()}); //For file uplod
 
 	const options: cors.CorsOptions = {
 		origin: config.allowed,
 	};
 
+	const db = new MySQL(config.database.host, config.database.user, config.database.password, config.database.dbname);
+	await db.init();
+
 	app.use(cors(options));
+	app.use(express.json());
 
 	app.set('jwtKey', config.jwtKey);
-	app.set('db', new MySQL(config.database.host, config.database.user, config.database.password, config.database.dbname));
+	app.set('db', db);
 
-	app.post('/register', Middleware.checkBody(['email', 'password', 'dob', 'address']), Handler.register); //Registration endpoint
+	app.post('/register', Middleware.checkBody(['email', 'hash', 'name', 'dob', 'phone', 'address']), Handler.register); //Registration endpoint
 
 	app.listen(config.port, () => {
 		console.log(`Web service started on port ${config.port}.`);
