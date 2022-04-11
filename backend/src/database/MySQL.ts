@@ -6,8 +6,10 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { LoginResult } from "../responses/responses/LoginResponse";
 import LoginRequest from "../requests/LoginRequest";
+import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/GetUserDataResponse";
 
 export default class MySQL extends DataProvider{
+	
 	conn!: mysql.Connection;
 	host: string;
 	user: string;
@@ -21,6 +23,22 @@ export default class MySQL extends DataProvider{
 		this.database = database;
 	}
 
+	async getUserData(uid: string): Promise<{ res: GetUserDataResult, data: GetUserDataResponse['data']}> {
+		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT email, name, dob, phone, address WHERE uid = ? LIMIT 1;', [uid]);
+		const userData = rows[0];
+		return{
+			res: GetUserDataResult.Success,
+			data: {
+				uid: uid,
+				email: userData.email,
+				name: userData.name,
+				dob: new Date(userData.dob),
+				phone: userData.phone,
+				address: userData.address
+			}
+		}
+	}
+
 	async login(req: LoginRequest): Promise<{res: Exclude<LoginResult, LoginResult.Success>} | {res: LoginResult.Success, uid: string}>{
 		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT hash, uid FROM users WHERE email = ? LIMIT 1;', [req.email]);
 		if(rows.length === 0) return {res: LoginResult.NotRegistered};
@@ -28,7 +46,7 @@ export default class MySQL extends DataProvider{
 		return {res: LoginResult.WrongPassword};
 	}
 
-	async register(req: RegisterRequest): Promise<{res: RegResult.Registered} | {res: RegResult.Success, uid: string}> {
+	async register(req: RegisterRequest): Promise<{res: Exclude<RegResult, RegResult.Success | RegResult.Invalid>} | {res: RegResult.Success, uid: string}> {
 		await this.conn.beginTransaction();
 		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT EXISTS (SELECT * FROM users WHERE email = ?) AS res;', [req.email]);
 		if(rows[0].res !== 0) {
