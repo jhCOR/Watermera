@@ -42,10 +42,12 @@ async function main(){
 
 	app.use(cors(options));
 	app.use(express.json());
+	app.use(express.urlencoded({extended: true}))
 
 	app.set('jwtKey', config.jwtKey);
 	app.set('db', db);
 
+	app.post('/login', Middleware.checkBody(['email', 'hash']), Handler.login); //Login endpoint
 	app.post('/register', Middleware.checkBody(['email', 'hash', 'name', 'dob', 'phone', 'address']), Handler.register); //Registration endpoint
 
 	app.listen(config.port, () => {

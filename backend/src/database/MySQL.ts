@@ -22,8 +22,10 @@ export default class MySQL extends DataProvider{
 	}
 
 	async login(req: LoginRequest): Promise<{res: Exclude<LoginResult, LoginResult.Success>} | {res: LoginResult.Success, uid: string}>{
-		const [rows, fields] = await this.conn.execute('SELECT EXISTS (SELECT * FROM users WHERE email = ?) AS res;', [req.email]);
-		return {res: LoginResult.WrongPassword}
+		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT hash, uid FROM users WHERE email = ? LIMIT 1;', [req.email]);
+		if(rows.length === 0) return {res: LoginResult.NotRegistered};
+		if(await bcrypt.compare(req.hash, rows[0].hash)) return {res: LoginResult.Success, uid: rows[0].uid};
+		return {res: LoginResult.WrongPassword};
 	}
 
 	async register(req: RegisterRequest): Promise<{res: RegResult.Registered} | {res: RegResult.Success, uid: string}> {
