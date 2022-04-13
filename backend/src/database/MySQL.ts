@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import { LoginResult } from "../responses/responses/LoginResponse";
 import LoginRequest from "../requests/LoginRequest";
 import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/GetUserDataResponse";
+import QualityTestResult from "../types/QualityTestResult";
 
 export default class MySQL extends DataProvider{
 	
@@ -21,6 +22,18 @@ export default class MySQL extends DataProvider{
 		this.user = user;
 		this.password = password;
 		this.database = database;
+	}
+
+	async addTestResults(uid: string, rows: QualityTestResult[]){
+		await this.conn.beginTransaction();
+		try{
+			for(const r of rows){
+				await this.conn.execute<mysql.OkPacket>(``)
+			}
+		} catch(e){
+			await this.conn.rollback();
+			throw e;
+		}
 	}
 
 	async getUserData(uid: string): Promise<{ res: GetUserDataResult, data: GetUserDataResponse['data']}> {
@@ -73,7 +86,37 @@ export default class MySQL extends DataProvider{
 			password: this.password,
 			database: this.database
 		});
-		await this.conn.execute('CREATE TABLE IF NOT EXISTS users (uid CHAR(36) PRIMARY KEY, email VARCHAR(60), hash CHAR(60), name VARCHAR(20), dob DATE, phone CHAR(11), address VARCHAR(200));');
+		await this.conn.execute(
+			`CREATE TABLE IF NOT EXISTS users (
+				uid CHAR(36) PRIMARY KEY,
+				email VARCHAR(60),
+				hash CHAR(60),
+				name VARCHAR(20),
+				dob DATE,
+				phone CHAR(11),
+				address VARCHAR(200)
+			);`
+		);
+		await this.conn.execute(
+			`CREATE TABLE IF NOT EXISTS permissions (
+				uid CHAR(36) PRIMARY KEY,
+				canEditRecords BOOLEAN NOT NULL,
+				canViewAllRequests BOOLEAN NOT NULL,
+				canChangeRequestStatus BOOLEAN NOT NULL,
+				canManagePermissions BOOLEAN NOT NULL,
+				FOREIGN KEY (uid) REFERENCES users(uid)
+				ON DELETE CASCADE ON UPDATE CASCADE
+			);`
+		);
+		await this.conn.execute(
+			`CREATE TABLE IF NOT EXISTS test_results (
+				rid CHAR(36) PRIMARY KEY,
+				year SMALLINT NOT NULL,
+				month TINYINT NOT NULL,
+				region VARCHAR(200),
+				inst VARCHAR(200)
+			);`
+		);
 		return true;
 	}
 }
