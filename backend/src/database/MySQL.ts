@@ -8,6 +8,7 @@ import { LoginResult } from "../responses/responses/LoginResponse";
 import LoginRequest from "../requests/LoginRequest";
 import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/GetUserDataResponse";
 import QualityTestResult from "../types/QualityTestResult";
+import { Permission } from "../types/Permission";
 
 export default class MySQL extends DataProvider{
 	
@@ -22,6 +23,16 @@ export default class MySQL extends DataProvider{
 		this.user = user;
 		this.password = password;
 		this.database = database;
+	}
+
+	async hasPermission(uid: string, permissions: Partial<Permission>): Promise<boolean>{
+		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT canEditRecords, canViewAllRequests, canChangeRequestStatus, canManagePermissions FROM permissions WHERE uid = ? LIMIT 1;', [uid]);
+		if(!rows.length) return false;
+		if(permissions.canEditRecords && !rows[0].canEditRecords) return false;
+		if(permissions.canViewAllRequests && !rows[0].canViewAllRequests) return false;
+		if(permissions.canChangeRequestStatus && !rows[0].canChangeRequestStatus) return false;
+		if(permissions.canManagePermissions && !rows[0].canManagePermissions) return false;
+		return true;
 	}
 
 	async addTestResults(uid: string, rows: QualityTestResult[]){
@@ -110,11 +121,23 @@ export default class MySQL extends DataProvider{
 		);
 		await this.conn.execute(
 			`CREATE TABLE IF NOT EXISTS test_results (
-				rid CHAR(36) PRIMARY KEY,
+				recid CHAR(36) PRIMARY KEY,
 				year SMALLINT NOT NULL,
 				month TINYINT NOT NULL,
 				region VARCHAR(200),
 				inst VARCHAR(200)
+			);`
+		);
+		await this.conn.execute(
+			`CREATE TABLE IF NOT EXISTS test_requests (
+				reqid CHAR(36) PRIMARY KEY,
+				time DATE NOT NULL,
+				location VARCHAR(200) NOT NULL,
+				requestor CHAR(36) NOT NULL,
+				status TINYINT NOT NULL,
+				recid CHAR(36),
+				note BLOB NOT NULL,
+				FOREIGN KEY (requestor) REFERENCES users (uid)
 			);`
 		);
 		return true;
