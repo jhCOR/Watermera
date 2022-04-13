@@ -47,6 +47,8 @@ async function main(){
 	app.set('jwtKey', config.jwtKey);
 	app.set('db', db);
 
+	app.get('/user', Middleware.checkToken, Handler.getUserData);
+
 	app.post('/login', Middleware.checkBody(['email', 'hash']), Handler.login); //Login endpoint
 	app.post('/register', Middleware.checkBody(['email', 'hash', 'name', 'dob', 'phone', 'address']), Handler.register); //Registration endpoint
 

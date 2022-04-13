@@ -24,7 +24,7 @@ export default class MySQL extends DataProvider{
 	}
 
 	async getUserData(uid: string): Promise<{ res: GetUserDataResult, data: GetUserDataResponse['data']}> {
-		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT email, name, dob, phone, address WHERE uid = ? LIMIT 1;', [uid]);
+		const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT email, name, dob, phone, address FROM users WHERE uid = ? LIMIT 1;', [uid]);
 		const userData = rows[0];
 		return{
 			res: GetUserDataResult.Success,
