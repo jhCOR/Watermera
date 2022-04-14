@@ -1,6 +1,6 @@
 export default interface QualityTestResult{
-	year: number;
-	month: number;
-	region: string;
-	inst: string;
+	readonly year: number;
+	readonly month: number;
+	readonly region: string;
+	readonly inst: string;
 }

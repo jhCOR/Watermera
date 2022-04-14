@@ -1,6 +1,6 @@
 export interface Permission{
-	canEditRecords: boolean;
-	canViewAllRequests: boolean;
-	canChangeRequestStatus: boolean;
-	canManagePermissions: boolean;
+	readonly canEditRecords: boolean;
+	readonly canViewAllRequests: boolean;
+	readonly canChangeRequestStatus: boolean;
+	readonly canManagePermissions: boolean;
 }

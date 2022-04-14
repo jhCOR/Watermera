@@ -1,4 +1,4 @@
 export default interface LoginRequest{
-	email: string;
-	hash: string;
+	readonly email: string;
+	readonly hash: string;
 }
