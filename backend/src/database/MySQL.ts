@@ -10,14 +10,14 @@ import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/G
 import QualityTestResult from "../types/QualityTestResult";
 import { Permission } from "../types/Permission";
 import RequestPost from "../types/RequestPost";
+import GetTestRequestsResponse, { GetTestRequestsResult } from "../responses/responses/GetTestRequestsResponse";
 
 export default class MySQL extends DataProvider{
-	
 	conn!: mysql.Connection;
-	host: string;
-	user: string;
-	password: string;
-	database: string;
+	readonly host: string;
+	readonly user: string;
+	readonly password: string;
+	readonly database: string;
 	constructor(host: string, user: string, password: string, database: string){
 		super();
 		this.host = host;
@@ -36,7 +36,7 @@ export default class MySQL extends DataProvider{
 		return true;
 	}
 
-	async getTestRequests(uid: string): Promise<{allPosts: boolean, posts: RequestPost[]}>{
+	async getTestRequests(uid: string): Promise<{res: GetTestRequestsResult.Success, data: GetTestRequestsResponse['data']}>{
 		const canViewAllRequests = await this.hasPermission(uid, {canViewAllRequests: true});
 		let rows: mysql.RowDataPacket[];
 		let fields: mysql.FieldPacket[];
@@ -55,8 +55,11 @@ export default class MySQL extends DataProvider{
 			});
 		}
 		return {
-			allPosts: canViewAllRequests,
-			posts: posts
+			res: GetTestRequestsResult.Success,
+			data:{
+				allPosts: canViewAllRequests,
+				posts: posts
+			}
 		};
 	}
 

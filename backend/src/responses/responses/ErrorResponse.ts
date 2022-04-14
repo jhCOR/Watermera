@@ -1,7 +1,7 @@
 import ResponseBase from "../ResponseBase";
 
 export enum ReqError{
-	MissingProp = 1, //Request is incomplete
+	MissingProp = 10000, //Request is incomplete
 	InvalidToken, //User's token is invalid
 	NoToken, //Token is missing
 }

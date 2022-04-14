@@ -9,11 +9,11 @@ export enum RequestStatus{
 }
 
 export default interface RequestPost{
-	reqid: string;
-	time: Date;
-	location: string;
-	requestor: string;
-	status: RequestStatus;
-	resid: string | null;
-	note: string;
+	readonly reqid: string;
+	readonly time: Date;
+	readonly location: string;
+	readonly requestor: string;
+	readonly status: RequestStatus;
+	readonly resid: string | null;
+	readonly note: string;
 }
