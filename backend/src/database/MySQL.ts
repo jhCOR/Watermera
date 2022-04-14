@@ -9,6 +9,7 @@ import LoginRequest from "../requests/LoginRequest";
 import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/GetUserDataResponse";
 import QualityTestResult from "../types/QualityTestResult";
 import { Permission } from "../types/Permission";
+import RequestPost from "../types/RequestPost";
 
 export default class MySQL extends DataProvider{
 	
@@ -33,6 +34,30 @@ export default class MySQL extends DataProvider{
 		if(permissions.canChangeRequestStatus && !rows[0].canChangeRequestStatus) return false;
 		if(permissions.canManagePermissions && !rows[0].canManagePermissions) return false;
 		return true;
+	}
+
+	async getTestRequests(uid: string): Promise<{allPosts: boolean, posts: RequestPost[]}>{
+		const canViewAllRequests = await this.hasPermission(uid, {canViewAllRequests: true});
+		let rows: mysql.RowDataPacket[];
+		let fields: mysql.FieldPacket[];
+		if(canViewAllRequests) [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>(`SELECT * FROM test_requests;`);
+		else [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>(`SELECT * FROM test_requests WHERE requestor = ?;`, [uid]);
+		let posts: RequestPost[] = [];
+		for(const r of rows){
+			posts.push({
+				reqid: r.reqid,
+				time: new Date(r.time),
+				location: r.location,
+				requestor: r.requestor,
+				status: r.status,
+				resid: r.resid ? r.resid : null,
+				note: r.note
+			});
+		}
+		return {
+			allPosts: canViewAllRequests,
+			posts: posts
+		};
 	}
 
 	async addTestResults(uid: string, rows: QualityTestResult[]){
@@ -135,9 +160,10 @@ export default class MySQL extends DataProvider{
 				location VARCHAR(200) NOT NULL,
 				requestor CHAR(36) NOT NULL,
 				status TINYINT NOT NULL,
-				recid CHAR(36),
+				resid CHAR(36),
 				note BLOB NOT NULL,
 				FOREIGN KEY (requestor) REFERENCES users (uid)
+				ON DELETE CASCADE ON UPDATE CASCADE
 			);`
 		);
 		return true;
