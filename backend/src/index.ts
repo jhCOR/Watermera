@@ -42,16 +42,19 @@ async function main(){
 
 	app.use(cors(options));
 	app.use(express.json());
-	app.use(express.urlencoded({extended: true}))
+	app.use(express.urlencoded({extended: true}));
 
 	app.set('jwtKey', config.jwtKey);
 	app.set('db', db);
 
 	app.get('/user', Middleware.checkToken, Handler.getUserData);
-	app.get('/requests', Middleware.checkToken, Handler.getTestRequests);
+	app.get('/request', Middleware.checkToken, Handler.getTestRequests);
 
 	app.post('/login', Middleware.checkBody(['email', 'hash']), Handler.login); //Login endpoint
+	app.post('/request', Middleware.checkToken, Middleware.checkBody(['location', 'note']), Handler.createRequest);
 	app.post('/register', Middleware.checkBody(['email', 'hash', 'name', 'dob', 'phone', 'address']), Handler.register); //Registration endpoint
+
+	app.put('/requests')
 
 	app.listen(config.port, () => {
 		console.log(`Web service started on port ${config.port}.`);
