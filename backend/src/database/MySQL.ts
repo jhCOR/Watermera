@@ -9,8 +9,10 @@ import LoginRequest from "../requests/LoginRequest";
 import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/GetUserDataResponse";
 import QualityTestResult from "../types/QualityTestResult";
 import { Permission } from "../types/Permission";
-import RequestPost from "../types/RequestPost";
+import RequestPost, { RequestStatus } from "../types/RequestPost";
 import GetTestRequestsResponse, { GetTestRequestsResult } from "../responses/responses/GetTestRequestsResponse";
+import PostTestReqRequest from "../requests/PostTestReqRequest";
+import PostTestReqResponse, { PostTestReqResult } from "../responses/responses/PostTestReqResponse";
 
 export default class MySQL extends DataProvider{
 	conn!: mysql.Connection;
@@ -34,6 +36,29 @@ export default class MySQL extends DataProvider{
 		if(permissions.canChangeRequestStatus && !rows[0].canChangeRequestStatus) return false;
 		if(permissions.canManagePermissions && !rows[0].canManagePermissions) return false;
 		return true;
+	}
+
+	async createTestRequest(uid: string, req: PostTestReqRequest): Promise<{res: PostTestReqResult.Success, data: PostTestReqResponse['data']}>{
+		await this.conn.beginTransaction();
+		try{
+			const reqid = crypto.randomUUID();
+			await this.conn.execute<mysql.OkPacket>(
+				`INSERT INTO test_requests
+				(reqid, time, location, requestor, status, resid, note)
+				VALUES (?, ?, ?, ?, ?, ?, ?)`,
+				[reqid, new Date(), req.location, uid, RequestStatus.UnderReview, null, req.note]
+			);
+			await this.conn.commit();
+			return{
+				res: PostTestReqResult.Success,
+				data: {
+					reqid: reqid
+				}
+			};
+		} catch(e){
+			await this.conn.rollback();
+			throw e;
+		}
 	}
 
 	async getTestRequests(uid: string): Promise<{res: GetTestRequestsResult.Success, data: GetTestRequestsResponse['data']}>{
