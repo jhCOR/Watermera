@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Link, Button} from '@mui/material';
+import { AppBar, Toolbar, Typography, Button} from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
@@ -12,41 +13,27 @@ function Header() {
       >
         <Toolbar sx={{ flexWrap: 'wrap' }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-          	K-water
+			  <Link  to="/"> 
+				  K-water
+			  </Link>
           </Typography>
           <nav>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              소개
-            </Link>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              수질 검사 요청
-            </Link>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              공지사항
-            </Link>
-			<Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Q & A
-            </Link>
+			<a
+			href="https://www.miricanvas.com/v/1zrnpt"
+			  target="_blank"
+			  rel="noopener noreferrer"
+			>
+			   <Button variant="text">소개</Button>
+			</a>
+            <Link  to="/apply"> 
+				  <Button variant="text">수질 검사 신청</Button>
+			</Link>
+            <Link  to="/board/announce"> 
+				  <Button variant="text">공지사항</Button>
+			</Link>
+			<Link  to="/board/question"> 
+				  <Button variant="text">Q&A</Button>
+			</Link>
           </nav>
           <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
             Login
