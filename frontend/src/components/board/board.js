@@ -21,7 +21,6 @@ import {
 } from '@mui/material';
 import { request } from '../../adaptor/requestData';
 function ShowList({postObject}) {
-	
 	const [page, setPage] = useState(0);
 	const [order, setOrder] = useState('asc');
 	const [selected, setSelected] = useState([]);
@@ -77,7 +76,7 @@ function ShowList({postObject}) {
                           tabIndex={-1}
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
-						  onClick={() => showPost('/board/showPost?id='+id)}
+						  onClick={() => showPost('/board/showPost?id='+id+'&purpose='+postObject.purpose)}
                         >
 
                           <TableCell component="th" scope="row" padding="none" >

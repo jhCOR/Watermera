@@ -65,8 +65,9 @@ function ShowList() {
                 
               </Table>
 				<Link to="/write"> 
-					  <Button >신청서 작성</Button>
+					  <Button >신청서 간편 작성</Button>
 				</Link>
+				<Button ><a href="/resource/file/water_proc02/붙임1. 수질검사신청서.hwp" download>신청서 직접 작성</a></Button>
             </TableContainer>
 			
         </Card>

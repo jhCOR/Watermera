@@ -52,7 +52,7 @@ function Board({tiers}) {
                         variant="subtitle1"
                         align="center"
                         key={line}
-						onClick={() => showPost('/board/showPost?id='+tier.id)}
+						onClick={() => showPost('/board/showPost?id='+tier.id+'&purpose='+tier.purpose)}
                       >
                         {line}
                       </Typography>

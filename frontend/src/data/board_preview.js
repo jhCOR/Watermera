@@ -6,13 +6,14 @@ const tiers = [
   {
     title: '공지사항',
 	url:'/board/announce',
-    description: announce_post.slice(0,4)
+    description: announce_post.slice(0,4),
+	purpose:'announce'
   },
   {
     title: 'Q & A',
 	url:'/board/question',
     description: question_post.slice(0,4),
-
+	purpose:'question'
   }
 ];
 
