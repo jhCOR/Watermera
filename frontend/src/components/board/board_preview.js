@@ -3,14 +3,17 @@ import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 
 import { Box, Grid, Container, Typography, Divider, Card, CardContent, CardHeader, CardActions, Button,
 	   AppBar, Toolbar} from '@mui/material';
-
+import { request } from '../../adaptor/requestData';
 function Board({tiers}) {
-const navigate = useNavigate();	
-var width = tiers.length == 1 ? 12 : 6;
+	const navigate = useNavigate();	
+	
+	var width = tiers.length == 1 ? 12 : 6;
+
+	var request_data = new request(null);
 	const showPost = (url) =>{
-	  console.log(url);
-	  navigate(url);
-  }
+	request_data.requestData(null, url);
+	navigate(url);
+	}
   return (
 	  
 	<Container component="main">

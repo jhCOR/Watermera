@@ -19,20 +19,21 @@ import {
   TableContainer,
   TablePagination
 } from '@mui/material';
-
+import { request } from '../../adaptor/requestData';
 function ShowList({postObject}) {
 	
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [page, setPage] = useState(0);
+	const [order, setOrder] = useState('asc');
+	const [selected, setSelected] = useState([]);
+	const [orderBy, setOrderBy] = useState('name');
+	const [filterName, setFilterName] = useState('');
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const navigate = useNavigate();
+	var request_data = new request(null);
 	
   const showPost = (url) =>{
-	  console.log(url);
-	  navigate(url);
+	request_data.requestData(null, url);
+	navigate(url);
   }
   
   const handleChangePage = (event, newPage) => {
