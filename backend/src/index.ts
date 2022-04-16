@@ -54,7 +54,7 @@ async function main(){
 	app.post('/request', Middleware.checkToken, Middleware.checkBody(['location', 'note']), Handler.createRequest);
 	app.post('/register', Middleware.checkBody(['email', 'hash', 'name', 'dob', 'phone', 'address']), Handler.register); //Registration endpoint
 
-	app.put('/requests')
+	app.put('/request/:id', Middleware.checkToken, Handler.updateRequest);
 
 	app.listen(config.port, () => {
 		console.log(`Web service started on port ${config.port}.`);

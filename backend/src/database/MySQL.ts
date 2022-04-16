@@ -33,7 +33,7 @@ export default class MySQL extends DataProvider{
 		await this.conn.beginTransaction();
 		try{
 			const canViewAllRequests = await this.hasPermission(uid, {canViewAllRequests: true});
-			const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT status, requestor FROM test_requests WHERE reqid = ?) AS res LIMIT 1;', [reqid]);
+			const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT status, requestor FROM test_requests WHERE reqid = ? LIMIT 1;', [reqid]);
 			if(rows.length === 0) {
 				await this.conn.rollback();
 				return { res: UpdateTestReqResult.DoesNotExist };
@@ -44,11 +44,13 @@ export default class MySQL extends DataProvider{
 					await this.conn.rollback();
 					return { res: UpdateTestReqResult.AlreadyReviewed };
 				} else {
+					const newLoc = req.location ? req.location : null;
+					const newNote = req.note ? req.note : null;
 					await this.conn.execute<mysql.OkPacket>(
 						`UPDATE test_requests
-						SET time = ?, location = COALESCE(location, ?), status = 0, note = COALESCE(note, ?)
+						SET time = ?, location = COALESCE(?, location), status = 0, note = COALESCE(?, note)
 						WHERE reqid = ?;`,
-						[new Date(), req.location ? req.location : null, req.note ? req.note : null]
+						[new Date(), newLoc, newNote, reqid]
 					);
 					await this.conn.commit();
 					return { res: UpdateTestReqResult.Success };
@@ -219,7 +221,7 @@ export default class MySQL extends DataProvider{
 		await this.conn.execute(
 			`CREATE TABLE IF NOT EXISTS test_requests (
 				reqid CHAR(36) PRIMARY KEY,
-				time DATE NOT NULL,
+				time TIMESTAMP NOT NULL,
 				location VARCHAR(200) NOT NULL,
 				requestor CHAR(36) NOT NULL,
 				status TINYINT NOT NULL,
