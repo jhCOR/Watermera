@@ -9,24 +9,40 @@ import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
-
+import {load_announce, load_QandA} from '../../adaptor/adaptor';
+import PostEditor from './writePostPage';
 export default function postPage() {
+	
+var search = window.location.search;
+var PREFIX = search.indexOf('purpose=');
+var PURPOSE =  search.substring(PREFIX + 'purpose='.length); 
+
+var post;
+if(PURPOSE == 'announce'){
+	post = load_announce();
+}else if('question'){
+	post = load_QandA();
+}
+
   return (
 	
     <Box sx={{ minWidth: 800}}>
 		<Card sx={{ minWidth: 800, display: 'inline-block' }}>
 		  <CardContent>
-			<Stack direction="row" spacing={2}>
-				<Typography variant="body2" className="display-enter" align = 'left'> 
-					게시글 화면
-					<br />
-				</Typography>
-				
-			</Stack>
-			  
+			
+			<Typography variant="h4" className="display-enter" align = 'left'> 
+				{post[0].title}
+				<br />
+			</Typography>
+			<br />
+			<Typography variant="body2" className="display-enter" align = 'left'> 
+				{post[0].content}
+				<br />
+			</Typography>
+						  
 		  </CardContent>
 		  <CardActions>
-
+			<PostEditor />
 		  </CardActions>
 		</Card>
     </Box>

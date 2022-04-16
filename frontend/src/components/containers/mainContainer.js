@@ -12,7 +12,7 @@ import Write_apply_paper from '../applyMeasurement/applyForm';
 import { Box, Grid, Container, Typography, Divider, Card, CardContent, CardHeader, CardActions, Button,
 	   AppBar, Toolbar} from '@mui/material';
 import { gray } from '@mui/material/colors';
-import preview from '../../data/board_preview';
+import tiers from '../../data/board_preview';
 import applyBoardList from '../../data/applyBoard';
 
 function MainContainer() {
@@ -37,9 +37,9 @@ var MORMAL_SIZE = 0;
 		<br></br>
 		
 		<Routes >
-			<Route exact path="/" element={<Board_preview tiers={preview}/>} />
-        	<Route exact path="/list" element={<Board_preview tiers={preview}/>} />
-			<Route exact path="/map" element={<Board_preview  tiers={preview}/>} />
+			<Route exact path="/" element={<Board_preview tiers={tiers}/>} />
+        	<Route exact path="/list" element={<Board_preview tiers={tiers}/>} />
+			<Route exact path="/map" element={<Board_preview  tiers={tiers}/>} />
 			<Route exact path="/apply" element={<Board_preview tiers={applyBoardList}/>} />
 			<Route  path="/write/search" element={<Search />} />
         </Routes >
