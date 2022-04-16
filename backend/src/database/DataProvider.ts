@@ -6,6 +6,7 @@ import GetUserDataResponse, { GetUserDataResult } from "../responses/responses/G
 import { LoginResult } from "../responses/responses/LoginResponse";
 import PostTestReqResponse, { PostTestReqResult } from "../responses/responses/PostTestReqResponse";
 import { RegResult } from "../responses/responses/RegistrationResponse";
+import { UpdateTestReqResult } from "../responses/responses/UpdateTestReqResponse";
 
 export default abstract class DataProvider{
 	/**
@@ -22,4 +23,5 @@ export default abstract class DataProvider{
 	abstract getUserData(uid: string): Promise<{res: GetUserDataResult.Success, data: GetUserDataResponse['data']}>;
 	abstract getTestRequests(uid: string): Promise<{res: GetTestRequestsResult.Success, data: GetTestRequestsResponse['data']}>;
 	abstract createTestRequest(uid: string, req: PostTestReqRequest): Promise<{res: PostTestReqResult.Success, data: PostTestReqResponse['data']}>;
+	abstract updateTestRequest(uid: string, reqid: string, req: Partial<PostTestReqRequest>): Promise<{res: UpdateTestReqResult}>;
 }

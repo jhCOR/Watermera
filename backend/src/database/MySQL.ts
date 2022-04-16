@@ -13,6 +13,7 @@ import RequestPost, { RequestStatus } from "../types/RequestPost";
 import GetTestRequestsResponse, { GetTestRequestsResult } from "../responses/responses/GetTestRequestsResponse";
 import PostTestReqRequest from "../requests/PostTestReqRequest";
 import PostTestReqResponse, { PostTestReqResult } from "../responses/responses/PostTestReqResponse";
+import { UpdateTestReqResult } from "../responses/responses/UpdateTestReqResponse";
 
 export default class MySQL extends DataProvider{
 	conn!: mysql.Connection;
@@ -26,6 +27,40 @@ export default class MySQL extends DataProvider{
 		this.user = user;
 		this.password = password;
 		this.database = database;
+	}
+
+	async updateTestRequest(uid: string, reqid: string, req: Partial<PostTestReqRequest>): Promise<{ res: UpdateTestReqResult; }> {
+		await this.conn.beginTransaction();
+		try{
+			const canViewAllRequests = await this.hasPermission(uid, {canViewAllRequests: true});
+			const [rows, fields] = await this.conn.execute<mysql.RowDataPacket[]>('SELECT status, requestor FROM test_requests WHERE reqid = ?) AS res LIMIT 1;', [reqid]);
+			if(rows.length === 0) {
+				await this.conn.rollback();
+				return { res: UpdateTestReqResult.DoesNotExist };
+			}
+			const targetPost = rows[0];
+			if(canViewAllRequests || targetPost.requestor === uid){
+				if(targetPost.status !== 0 && targetPost.status !== 6) {
+					await this.conn.rollback();
+					return { res: UpdateTestReqResult.AlreadyReviewed };
+				} else {
+					await this.conn.execute<mysql.OkPacket>(
+						`UPDATE test_requests
+						SET time = ?, location = COALESCE(location, ?), status = 0, note = COALESCE(note, ?)
+						WHERE reqid = ?;`,
+						[new Date(), req.location ? req.location : null, req.note ? req.note : null]
+					);
+					await this.conn.commit();
+					return { res: UpdateTestReqResult.Success };
+				}
+			} else {
+				await this.conn.rollback();
+				return { res: UpdateTestReqResult.NotAllowed };
+			}
+		} catch(e){
+			await this.conn.rollback();
+			throw e;
+		}
 	}
 
 	async hasPermission(uid: string, permissions: Partial<Permission>): Promise<boolean>{
