@@ -203,7 +203,7 @@ export default class MySQL extends DataProvider{
 				hash CHAR(60),
 				name VARCHAR(20),
 				dob DATE,
-				phone CHAR(11),
+				phone VARCHAR(14),
 				address VARCHAR(200)
 			);`
 		);
@@ -218,15 +218,7 @@ export default class MySQL extends DataProvider{
 				ON DELETE CASCADE ON UPDATE CASCADE
 			);`
 		);
-		await conn.execute(
-			`CREATE TABLE IF NOT EXISTS test_results (
-				recid CHAR(36) PRIMARY KEY,
-				year SMALLINT NOT NULL,
-				month TINYINT NOT NULL,
-				region VARCHAR(200),
-				inst VARCHAR(200)
-			);`
-		);
+
 		await conn.execute(
 			`CREATE TABLE IF NOT EXISTS test_requests (
 				reqid CHAR(36) PRIMARY KEY,
@@ -234,26 +226,35 @@ export default class MySQL extends DataProvider{
 				location VARCHAR(200) NOT NULL,
 				requestor CHAR(36) NOT NULL,
 				status TINYINT NOT NULL,
-				resid CHAR(36),
+				recid CHAR(36),
 				note BLOB NOT NULL,
 				FOREIGN KEY (requestor) REFERENCES users (uid)
 				ON DELETE CASCADE ON UPDATE CASCADE
 			);`
 		);
-		// await this.conn.execute(
-		// 	`CREATE TABLE IF NOT EXISTS test_records (
-		// 		resid CHAR(36) PRIMARY KEY,
-		// 		year SMALLINT NOT NULL,
-		// 		month TINYINT NOT NULL,
-		// 		region VARCHAR(50) NOT NULL,
-		// 		supplier VARCHAR(50) NOT NULL,
-		// 		tap_name VARCHAR(200) NOT NULL,
-		// 		resid CHAR(36),
-		// 		note BLOB NOT NULL,
-		// 		FOREIGN KEY (requestor) REFERENCES users (uid)
-		// 		ON DELETE CASCADE ON UPDATE CASCADE
-		// 	);`
-		// );
+		await conn.execute(
+			`CREATE TABLE IF NOT EXISTS test_records (
+				recid CHAR(36) PRIMARY KEY,
+				year SMALLINT NOT NULL,
+				month TINYINT NOT NULL,
+				region VARCHAR(50) NOT NULL,
+				supplier VARCHAR(50) NOT NULL,
+				tap_name VARCHAR(200) NOT NULL,
+				category BOOLEAN NOT NULL,
+				supply_method TINYINT NOT NULL,
+				institution VARCHAR(50) NOT NULL,
+				germs SMALLINT NOT NULL,
+				total_coliform BOOLEAN NOT NULL,
+				nh3 DECIMAL(7, 4) NOT NULL,
+				copper DECIMAL(7, 4) NOT NULL,
+				zinc DECIMAL(7, 4) NOT NULL,
+				chlorine_ion DECIMAL(7, 4) NOT NULL,
+				iron DECIMAL(7, 4) NOT NULL,
+				manganese DECIMAL(7, 4) NOT NULL,
+				residual_chlorine DECIMAL(7, 4) NOT NULL,
+				ecoli BOOLEAN NOT NULL
+			);`
+		);
 		conn.release();
 		return true;
 	}
