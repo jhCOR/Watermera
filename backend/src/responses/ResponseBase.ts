@@ -5,4 +5,5 @@ export enum GenErr{
 
 export default interface ResponseBase{
 	reason?: string;
+	res: number;
 }

@@ -14,6 +14,8 @@ import GetTestRequestsResponse, { GetTestRequestsResult } from "../responses/res
 import PostTestReqRequest from "../requests/PostTestReqRequest";
 import PostTestReqResponse, { PostTestReqResult } from "../responses/responses/PostTestReqResponse";
 import { UpdateTestReqResult } from "../responses/responses/UpdateTestReqResponse";
+import TestRecord from "../requests/TestRecord";
+import { AddRecordsResult } from "../responses/responses/AddRecordsResponse";
 
 export default class MySQL extends DataProvider{
 	pool: mysql.Pool;
@@ -27,6 +29,49 @@ export default class MySQL extends DataProvider{
 			waitForConnections: true,
 			connectionLimit: 10
 		});
+	}
+
+	async addRecords(uid: string, records: TestRecord[]): Promise<{res: AddRecordsResult.Success, data: string[]} | {res: Omit<AddRecordsResult, AddRecordsResult.Success>}>{
+		if(!await this.hasPermission(uid, {canEditRecords: true})) return {res: AddRecordsResult.NotAllowed};
+		const conn = await this.pool.getConnection();
+		await conn.beginTransaction();
+		try{
+			let ids = [];
+			for(const r of records){
+				const recid = crypto.randomUUID();
+				await conn.execute<mysql.OkPacket>(
+					`INSERT INTO test_records (recid, year, month, region, supplier, tap_name, category, supply_method, institution, germs, total_coliform, nh3, copper, zinc, chlorine_ion, iron, manganese, residual_chlorine, ecoli)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+				, [
+					recid,
+					r.year,
+					r.month,
+					r.region,
+					r.supplier,
+					r.tapName,
+					r.category,
+					r.supply_method,
+					r.institution,
+					r.germs,
+					r.totalColiform,
+					r.nh3,
+					r.copper,
+					r.zinc,
+					r.chlorineIon,
+					r.iron,
+					r.manganese,
+					r.residualChlorine,
+					r.ecoli
+				]);
+				ids.push(recid);
+			}
+			await conn.commit();
+			conn.release();
+			return {res: AddRecordsResult.Success, data: ids};
+		} catch(e){
+			await conn.rollback();
+			throw e;
+		}
 	}
 
 	async updateTestRequest(uid: string, reqid: string, req: Partial<PostTestReqRequest>): Promise<{ res: UpdateTestReqResult; }> {
