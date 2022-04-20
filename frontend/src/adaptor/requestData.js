@@ -28,6 +28,7 @@ export class request{
 			await axios
 			.post(API_url, Data)
 			.then(function(response) {
+				console.log(response)
 				THIS.result = response;
 				THIS.callback(response);
 			})
@@ -38,6 +39,7 @@ export class request{
 			await axios
 			.get(API_url)
 			.then(function(response) {
+				console.log(response)
 				THIS.result = response;
 				THIS.callback(response);
 			})
@@ -50,7 +52,6 @@ export class request{
 	loadFrom(){
 		var startPoint = this.url.indexOf('id=')+3;
 		var id_value = this.url.substring(startPoint);
-		
 	}
 	
 	checkUrlValidation(){

@@ -12,54 +12,33 @@ import { Link } from 'react-router-dom';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
-<TextField id="standard-basic" label="Standard" variant="standard" />
+import {request} from '../../adaptor/requestData';
 export default function Login() {
-  const [value, setValue] = React.useState(null);
+	const [email, setEmail] = React.useState('');
+	const [passward, setPassward] = React.useState('');
+	var request_data = new request(null);
+	
+	const login = function(){
+		var loginInfo = {
+			email,passward
+		}
+		request_data.requestData(loginInfo,'/longin');
+		console.log(request_data.result);
+	}
+	
   return (
 	
     <Box sx={{ minWidth: 800}}>
 		<Card sx={{ minWidth: 400, display: 'inline-block' }}>
 		  <CardContent>
 			<Stack direction="row" spacing={2}>
-				<TextField id="standard-basic" label="이름" variant="standard" sx = {{width : 200}}/>
-				<LocalizationProvider dateAdapter={AdapterDateFns}  sx = {{width : 200}}>
-					<DatePicker
-						label="생년월일"
-						value={value}
-						onChange={(newValue) => {
-						  setValue(newValue);
-						}}
-						renderInput={(params) => <TextField {...params} />}
-					/>
-				</LocalizationProvider>
+				<TextField id="standard-basic" label="이메일" variant="standard" sx = {{width : 200}} onChange={(event) => setEmail(event.target.value)}/>
+				<TextField id="standard-basic" label="비밀번호" variant="standard" sx = {{width : 200}} onChange={(event) => setPassward(event.target.value)}/>
 			</Stack>
 
-			<Stack direction="row" spacing={1}>
-				<Input placeholder="주소" readOnly sx = {{width : 300}}/>
-				<Link to="/write/search"> 
-					<Button >주소 검색</Button>
-				</Link>
-			</Stack>
-			<Typography variant="body2">
-			 <Input placeholder="전화번호(000-0000-0000)" sx = {{width : 300}} />
-			</Typography>
-			<Typography sx={{ mb: 1.5 }} color="text.secondary">
-			  <Input placeholder="검사목적"  sx = {{width : 300}}/>
-			</Typography>
-			<Typography variant="body2">
-			 <Input placeholder="검사의뢰 항목"  sx = {{width : 300}}/>
-			</Typography>
-			  
 		  </CardContent>
 		  <CardActions>
-			<a
-			href="https://www.kwater.or.kr/ipinPage.do?s_mid=702"
-			  target="_blank"
-			  rel="noopener noreferrer"
-			>
-			  문의 및 이의신청
-			</a>
+				<Button onClick={login}>로그인</Button>
 		  </CardActions>
 		</Card>
     </Box>

@@ -23,13 +23,11 @@ export default function Signup() {
 	var [inputPassword, setInputPassword] = useState("-")
 	var [inputNumber, setInputNumber]   = useState("-")
 	
-	
 	const { post, amount } = useSelector(state => ({
 		post: state.dataController.post,
 		amount: state.dataController.amount
 	}) );
 	var inputLocation = post.author;
-	console.log(post);
 	
 	const navigate = useNavigate();	
 	var request_data = new request(null);
