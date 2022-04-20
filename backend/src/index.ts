@@ -6,7 +6,7 @@ import path from 'path';
 import crypto from 'crypto';
 import Handler from "./Handler";
 import Middleware from "./Middleware";
-import MySQL from "./database/MySQL";
+// import MySQL from "./database/MySQL";
 
 async function main(){
 	const configPath = path.resolve('./config/config.json');
@@ -20,7 +20,7 @@ async function main(){
 				host: '',
 				user: '',
 				password: '',
-				dbname: ''
+				// dbname: ''
 			}
 		}));
 		console.log('Config file generated. Please fill in the details, then run the server again.');
@@ -37,15 +37,15 @@ async function main(){
 		origin: config.allowed,
 	};
 
-	const db = new MySQL(config.database.host, config.database.user, config.database.password, config.database.dbname);
-	await db.init();
+	// const db = new MySQL(config.database.host, config.database.user, config.database.password, config.database.dbname);
+	// await db.init();
 
 	app.use(cors(options));
 	app.use(express.json());
 	app.use(express.urlencoded({extended: true}));
 
 	app.set('jwtKey', config.jwtKey);
-	app.set('db', db);
+	// app.set('db', db);
 
 	app.get('/user', Middleware.checkToken, Handler.getUserData);
 	app.get('/request', Middleware.checkToken, Handler.getTestRequests);

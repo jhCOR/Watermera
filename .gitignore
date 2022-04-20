@@ -1,7 +1,9 @@
 /backend/node_modules
 /frontend/node_modules
-/frontend/public/index.html
-/frontend/src/.env
+/frontend/public/searchJuso.html
+/frontend/.env
+/frontend/adaptor/url
+/frontend/adaptor/id
 # dependencies
 /node_modules
 /.pnp

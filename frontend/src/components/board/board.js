@@ -20,6 +20,9 @@ import {
   TablePagination
 } from '@mui/material';
 import { request } from '../../adaptor/requestData';
+import { saveData, loadData, deleteData } from '../../redux/modules/dataController';
+import { useSelector, useDispatch } from 'react-redux';
+
 function ShowList({postObject}) {
 	const [page, setPage] = useState(0);
 	const [order, setOrder] = useState('asc');
@@ -28,13 +31,32 @@ function ShowList({postObject}) {
 	const [filterName, setFilterName] = useState('');
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const navigate = useNavigate();
-	var request_data = new request(null);
+	const request_data = new request(null);
 	
-  const showPost = (url) =>{
+	const dispatch = useDispatch();
+	const onSaveData = data => dispatch(saveData(data));
+	
+  const controlData = (table_row_Data) =>{
+	  var {id,...other} = table_row_Data;
+	if(postObject.purpose!='searchAddr'){
+		showData(id);
+	}else{
+		propagation_upside(other);
+	}
+  }
+  
+  const propagation_upside = (paramObject)=>{
+	  console.log(paramObject);
+	  onSaveData(paramObject);
+	  
+  }
+  
+  const showData= (id)=>{
+	var url = '/board/showPost?id='+id+'&purpose='+postObject.purpose;
 	request_data.requestData(null, url);
 	navigate(url);
   }
-  
+	
   const handleChangePage = (event, newPage) => {
 	console.log('newPage:')
 	console.log(newPage)
@@ -76,7 +98,7 @@ function ShowList({postObject}) {
                           tabIndex={-1}
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
-						  onClick={() => showPost('/board/showPost?id='+id+'&purpose='+postObject.purpose)}
+						  onClick={() => controlData(row)}
                         >
 
                           <TableCell component="th" scope="row" padding="none" >
