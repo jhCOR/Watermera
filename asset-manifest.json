@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/Watermera/static/css/main.357ddd77.chunk.css",
-    "main.js": "/Watermera/static/js/main.2b9df0a4.chunk.js",
-    "main.js.map": "/Watermera/static/js/main.2b9df0a4.chunk.js.map",
+    "main.js": "/Watermera/static/js/main.cac21a8b.chunk.js",
+    "main.js.map": "/Watermera/static/js/main.cac21a8b.chunk.js.map",
     "runtime-main.js": "/Watermera/static/js/runtime-main.184e70df.js",
     "runtime-main.js.map": "/Watermera/static/js/runtime-main.184e70df.js.map",
     "static/css/2.8e4e8e1f.chunk.css": "/Watermera/static/css/2.8e4e8e1f.chunk.css",
-    "static/js/2.26b3b3b8.chunk.js": "/Watermera/static/js/2.26b3b3b8.chunk.js",
-    "static/js/2.26b3b3b8.chunk.js.map": "/Watermera/static/js/2.26b3b3b8.chunk.js.map",
+    "static/js/2.b3d4241f.chunk.js": "/Watermera/static/js/2.b3d4241f.chunk.js",
+    "static/js/2.b3d4241f.chunk.js.map": "/Watermera/static/js/2.b3d4241f.chunk.js.map",
     "index.html": "/Watermera/index.html",
     "static/css/2.8e4e8e1f.chunk.css.map": "/Watermera/static/css/2.8e4e8e1f.chunk.css.map",
     "static/css/main.357ddd77.chunk.css.map": "/Watermera/static/css/main.357ddd77.chunk.css.map",
-    "static/js/2.26b3b3b8.chunk.js.LICENSE.txt": "/Watermera/static/js/2.26b3b3b8.chunk.js.LICENSE.txt"
+    "static/js/2.b3d4241f.chunk.js.LICENSE.txt": "/Watermera/static/js/2.b3d4241f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.184e70df.js",
     "static/css/2.8e4e8e1f.chunk.css",
-    "static/js/2.26b3b3b8.chunk.js",
+    "static/js/2.b3d4241f.chunk.js",
     "static/css/main.357ddd77.chunk.css",
-    "static/js/main.2b9df0a4.chunk.js"
+    "static/js/main.cac21a8b.chunk.js"
   ]
 }
