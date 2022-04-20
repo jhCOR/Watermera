@@ -34,7 +34,7 @@ async function main(){
 	const mem = multer({storage: multer.memoryStorage()}); //For file uplod
 
 	const options: cors.CorsOptions = {
-		origin: config.allowed,
+		origin: '*',
 	};
 
 	const db = new MySQL(config.database.host, config.database.user, config.database.password, config.database.dbname);
@@ -49,6 +49,11 @@ async function main(){
 
 	app.get('/user', Middleware.checkToken, Handler.getUserData);
 	app.get('/request', Middleware.checkToken, Handler.getTestRequests);
+	app.get('/', (req, res) => {
+		res.json({
+			res: 0
+		});
+	});
 
 	app.post('/login', Middleware.checkBody(['email', 'hash']), Handler.login); //Login endpoint
 	app.post('/request', Middleware.checkToken, Middleware.checkBody(['location', 'note']), Handler.createRequest);
