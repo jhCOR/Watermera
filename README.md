@@ -1,16 +1,17 @@
-## 프로젝트 소개
-**"우리가 마시는 물, 먹을 때까지 깨끗한가요?"** 🍹
+# 프로젝트 소개
+🍹 **"우리가 마시는 물, 먹을 때까지 깨끗한가요?"** 
 
 ![image](https://user-images.githubusercontent.com/63538097/163660444-9a16e759-2955-41cf-a817-7398d8f5d773.png)
 
 노후화된 수도꼭지, 오래된 배관... 혹시 우리가 오염된 물을 마시지는 않았을까요?
 
-**"오늘 우리 가족 외식할 식당, 우리 딸이 살 자취방에 물이 깨끗한지 미리 알아보면 어떨까요?"** ✔️
+
+✔️ **"이제 오늘 우리 가족 외식할 식당, 우리 딸이 살 자취방에 물이 깨끗한지 미리 알아볼 수 있습니다!"** 
 ![image](https://user-images.githubusercontent.com/63538097/163660520-f5cbb55d-01e4-4268-9397-abb4c976ee7b.png)
 
 공공기관, 요식업, 자취방과 기숙사 수질 인증제도를 통해 K-water의 신뢰도 있는 수질 검사 결과를 확인해볼 수 있습니다!
 
-## 주요 기능 :clipboard:
+# 주요 기능 :clipboard:
 <table>
     <tr>
         <td width="50%">
@@ -48,9 +49,9 @@
     </tr>
 </table>
 
-## 사용 기술
+# 사용 기술
 
-### Server(back-end)
+## Server(back-end)
 
 <table> 
 	<td>
@@ -64,7 +65,7 @@
 	</td>
 </table>
 
-### Front-end
+## Front-end
  <table>
  	<td>
 		<div align="center"><img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"><br>react.js</div>
@@ -74,7 +75,11 @@
 	</td>  
 </table>
 
-## 컴퓨터 구성 / 필수 조건 안내 (Prerequisites) :heavy_exclamation_mark:
+## Front-end Structure
+![전체 설계](https://user-images.githubusercontent.com/63538097/164579648-b1349006-fbed-44fd-a258-a9daae342520.jpg)
+
+# 컴퓨터 구성 / 필수 조건 
+안내 (Prerequisites) :heavy_exclamation_mark:
 * ECMAScript 6 지원 브라우저 사용해야 정상적으로 이용할 수 있습니다.
 * Google Chrome 버젼 77 이상을 권장합니다.
 * node버전 12이상
