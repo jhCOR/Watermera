@@ -1,0 +1,6 @@
+{
+	"jwtKey": "U74ANxyAhPL0WJEZhM8BYUHI7jeYtl+ckxu6Vieux+u08ybZtONAd1lyi9XF0OeT5ve4b9pe5enTt6ycqA9bqg==",
+	"allowedOrigins": [],
+	"port": 7777,
+	"database": { "host": "mariadb", "user": "watermera", "password": "watermera", "dbname": "watermera" }
+}

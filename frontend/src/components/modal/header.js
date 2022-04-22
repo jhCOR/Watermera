@@ -35,9 +35,17 @@ function Header() {
 				  <Button variant="text">Q&A</Button>
 			</Link>
           </nav>
-          <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-            Login
-          </Button>
+			<Link  to="/user/login"> 
+				<Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+            		Login
+				</Button>
+			</Link>
+			<Link  to="/user/signup"> 
+				<Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+            		sign up
+				</Button>
+			</Link>
+          
         </Toolbar>
       </AppBar>
   );

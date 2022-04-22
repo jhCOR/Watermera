@@ -13,7 +13,7 @@ export const deleteData = () => ({ type: DELETE });
 
 /* 초기 상태 선언 */
 const initialState = {
-  post: {title: '수질 조회', content:[{postTitle:'빈 제목', postBody:'빈 내용', postTime: '비어있는 시간', postAuthor:'작성자 없음'}]},
+  post: {address:'주소를 입력해주세요'},
   amount: 0
 };
 
@@ -26,10 +26,10 @@ export default function counter(state = initialState, action) {
       return state;
 		  
     case SAVE:
-		  console.log(state)
+	console.log(action.post)
       return {
         ...state,
-        post: state.post
+        post: action.post,
       };
 		  
     case DELETE:
